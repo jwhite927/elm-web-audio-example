@@ -13,3 +13,5 @@ npm start
 ```
 
 When clicking the text, you should hear a tone play through the browser tab.
+
+See the deployed example [live here](https://elm-web-audio-example.netlify.app/).
