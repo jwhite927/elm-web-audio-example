@@ -4,12 +4,14 @@
   "license": "",
   "private": true,
   "scripts": {
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "start": "webpack --mode production && serve dist"
   },
   "devDependencies": {
     "elm-webpack-loader": "^8.0.0",
     "file-loader": "^6.0.0",
     "loader-utils": "2.0.0",
+    "serve": "^14.1.2",
     "source-map-loader": "^4.0.1",
     "webpack": "^5.20.0",
     "webpack-cli": "^5.0.0",

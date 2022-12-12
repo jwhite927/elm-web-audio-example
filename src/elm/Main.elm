@@ -48,11 +48,13 @@ main =
             \model ->
                 Html.div [ Events.onClick TogglePlay ]
                     [ Html.text <|
-                        if model.playing then
-                            "⏸️"
+                        "Click to play/pause an A note: "
+                            ++ (if model.playing then
+                                    "⏸️"
 
-                        else
-                            "▶"
+                                else
+                                    "▶"
+                               )
                     ]
         , subscriptions = \sub -> Sub.none
         }
