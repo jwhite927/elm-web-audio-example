@@ -17,11 +17,8 @@ export class VirtualAudioContext {
 
         const flatten = (graph, nodes = {}, depth = 0) => {
             graph.forEach((node, i) => {
-                // Don't push RefNodes to the flat graph.
                 if (node.type !== 'RefNode') nodes[node.key] = node
                 if (node.connections) flatten(node.connections, nodes, depth + 1)
-                // If we're deeper than the root of the graph, replace
-                // this node with a reference to itself by key.
                 if (depth > 0) graph[i] = { type: 'RefNode', key: node.key }
             })
 
@@ -31,7 +28,6 @@ export class VirtualAudioContext {
         return flatten(key(graph))
     }
 
-    //
     static diff(oldNodes, newNodes) {
         const patches = { created: [], updated: [], removed: [] }
 
@@ -57,7 +53,6 @@ export class VirtualAudioContext {
                     const oldProp = oldNode.properties[j]
                     const newProp = newNode.properties[j]
 
-                    //
                     if (!oldProp) {
                         patches.created.push({ type: 'property', key: oldNode.key, data: newProp })
                     } else if (!newProp) {
@@ -74,7 +69,6 @@ export class VirtualAudioContext {
                     const oldConnection = oldNode.connections[j]
                     const newConnection = newNode.connections[j]
 
-                    //
                     if (!oldConnection) {
                         patches.created.push({ type: 'connection', key: oldNode.key, data: newConnection.key.split('.') })
                     } else if (!newConnection) {
@@ -146,7 +140,6 @@ export class VirtualAudioContext {
                     this._setProperty(patch.key, patch.data)
                     break
                 case 'connection':
-                    // Connections can't be updated
                     break
             }
         })
@@ -165,7 +158,6 @@ export class VirtualAudioContext {
     _createNode(key, { type, properties }) {
         let $node = null
 
-        //
         switch (type) {
             case 'AnalyserNode':
                 $node = this.$context.createAnalyser()
@@ -252,7 +244,6 @@ export class VirtualAudioContext {
         delete this.$nodes[key]
     }
 
-    //
     _setProperty(key, { type, label, value }) {
         const $node = this.$nodes[key]
 
@@ -269,7 +260,6 @@ export class VirtualAudioContext {
         }
     }
 
-    //
     _removeProperty(key, { type, label, value }) {
         const $node = this.$nodes[key]
 
@@ -280,17 +270,14 @@ export class VirtualAudioContext {
                 $node[label].value = $node[label].default
                 break
             case 'ScheduledUpdate':
-                // TODO: work out how to cancel scheduled updates
                 break
         }
     }
 
-    //
     _connect(a, [b, param = null]) {
         if (b) this.$nodes[a].connect(param ? this.$nodes[b][param] : this.$nodes[b])
     }
 
-    //
     _disconnect(a, [b, param = null]) {
         if (b) this.$nodes[a].disconnect(param ? this.$nodes[b][param] : this.$nodes[b])
     }
